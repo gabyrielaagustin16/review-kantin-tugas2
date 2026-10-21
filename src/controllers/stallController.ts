@@ -94,21 +94,41 @@ export class StallController {
     }
   };
 
-  createStall = async (
-    req: Request,
-    res: Response,
-  ): Promise<Response> => {
-    try {
-      const stall = await this.stallService.createStall(req.body);
+// src/controllers/stallController.ts
+public async createStall(req: Request, res: Response) {
+  try {
+    // Ambil ID user secara otomatis dari token (hasil dekode authMiddleware)
+    const ownerId = req.user?.id;
 
-      return res.status(201).json({
-        status: 'success',
-        data: stall,
+    if (!ownerId) {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'User tidak terautentikasi',
       });
-    } catch (error) {
-      return this.handleError(res, error);
     }
-  };
+
+    // Ambil sisa data warung dari request body (tanpa ownerId)
+    const { name, category, location, description } = req.body;
+
+    const stall = await this.stallService.createStall({
+      ownerId,
+      name,
+      category,
+      location,
+      description,
+    });
+
+    return res.status(201).json({
+      status: 'success',
+      data: stall,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Terjadi kesalahan pada server',
+    });
+  }
+}
 
   updateStall = async (
     req: Request,

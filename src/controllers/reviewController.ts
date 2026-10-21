@@ -30,25 +30,37 @@ export class ReviewController {
     }
   };
 
-  createReview = async (
-    req: Request,
-    res: Response,
-  ): Promise<Response> => {
-    try {
-      const review = await this.reviewService.createReview(req.body);
+public async createReview(req: Request, res: Response) {
+  try {
+    const userId = req.user?.id; // Ambil ID user otomatis dari token
 
-      return res.status(201).json({
-        status: 'success',
-        data: review,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        status: 'error',
-        message: 'Terjadi kesalahan pada server',
-        error: error instanceof Error ? error.message : String(error),
+    if (!userId) {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'User tidak terautentikasi',
       });
     }
-  };
+
+    const { stallId, rating, comment } = req.body;
+
+    const review = await this.reviewService.createReview({
+      userId,
+      stallId,
+      rating,
+      comment,
+    });
+
+    return res.status(201).json({
+      status: 'success',
+      data: review,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Terjadi kesalahan pada server',
+    });
+  }
+}
 
   deleteReview = async (
     req: Request,

@@ -3,32 +3,27 @@ import swaggerAutogen from 'swagger-autogen';
 const doc = {
   info: {
     title: 'Review Kantin API',
-    version: '1.0.0',
+    description: 'Dokumentasi API Review Kantin',
   },
-  servers: [
+  host: 'localhost:3000',
+  schemes: ['http'],
+  // Tambahkan konfigurasi ini agar tombol Authorize muncul di Swagger UI
+  securityDefinitions: {
+    bearerAuth: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
+      description: 'Masukkan token dengan format: Bearer <TOKEN_JWT_KAMU>',
+    },
+  },
+  security: [
     {
-      url: 'http://localhost:3000',
+      bearerAuth: [],
     },
   ],
-definitions: {
-  StallInput: {
-    $ownerId: 2,
-    $name: 'Warung Baru',
-    category: 'Makanan',
-    location: 'Gedung A',
-    description: '',
-  },
-
-  MenuItemInput: {
-    $stallId: 3,
-    $name: 'Cakalang Fufu',
-    $price: 25000,
-    $isAvailable: true,
-  },
-},
 };
 
-const outputFile = './src/docs/swagger-output.json';
-const endpointsFiles = ['./src/index.ts'];
+const outputFile = './src/docs/swagger-output.json'; // Sesuaikan dengan nama file output kamu
+const routes = ['./src/index.ts']; // Atau './src/app.ts' / lokasi router kamu
 
-swaggerAutogen()(outputFile, endpointsFiles, doc);
+swaggerAutogen()(outputFile, routes, doc);

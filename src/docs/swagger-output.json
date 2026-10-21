@@ -2,19 +2,22 @@
   "swagger": "2.0",
   "info": {
     "title": "Review Kantin API",
-    "version": "1.0.0",
-    "description": ""
+    "description": "Dokumentasi API Review Kantin",
+    "version": "1.0.0"
   },
   "host": "localhost:3000",
-  "servers": [
-    {
-      "url": "http://localhost:3000"
-    }
-  ],
   "basePath": "/",
   "schemes": [
     "http"
   ],
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Masukkan token dengan format: Bearer <TOKEN_JWT_KAMU>"
+    }
+  },
   "paths": {
     "/health": {
       "get": {
@@ -25,6 +28,63 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -64,6 +124,11 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -75,6 +140,12 @@
         "responses": {
           "201": {
             "description": "Warung dibuat"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
@@ -109,6 +180,11 @@
             "type": "integer"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -120,6 +196,12 @@
         "responses": {
           "200": {
             "description": "Warung ter-update"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Tidak ditemukan"
@@ -134,11 +216,22 @@
             "in": "path",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Warung terhapus"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Tidak ditemukan"
@@ -366,6 +459,11 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -389,19 +487,6 @@
                         "example": {
                           "type": "number",
                           "example": 3
-                        }
-                      }
-                    },
-                    "userId": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "type": "string",
-                          "example": "integer"
-                        },
-                        "example": {
-                          "type": "number",
-                          "example": 4
                         }
                       }
                     },
@@ -440,6 +525,12 @@
         "responses": {
           "201": {
             "description": "Review dibuat"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }
@@ -453,11 +544,22 @@
             "in": "path",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Review dihapus"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Review tidak ditemukan"
@@ -717,62 +819,9 @@
       }
     }
   },
-  "definitions": {
-    "StallInput": {
-      "type": "object",
-      "properties": {
-        "ownerId": {
-          "type": "number",
-          "example": 2
-        },
-        "name": {
-          "type": "string",
-          "example": "Warung Baru"
-        },
-        "category": {
-          "type": "string",
-          "example": "Makanan"
-        },
-        "location": {
-          "type": "string",
-          "example": "Gedung A"
-        },
-        "description": {
-          "type": "string",
-          "example": ""
-        }
-      },
-      "required": [
-        "ownerId",
-        "name"
-      ]
-    },
-    "MenuItemInput": {
-      "type": "object",
-      "properties": {
-        "stallId": {
-          "type": "number",
-          "example": 3
-        },
-        "name": {
-          "type": "string",
-          "example": "Cakalang Fufu"
-        },
-        "price": {
-          "type": "number",
-          "example": 25000
-        },
-        "isAvailable": {
-          "type": "boolean",
-          "example": true
-        }
-      },
-      "required": [
-        "stallId",
-        "name",
-        "price",
-        "isAvailable"
-      ]
+  "security": [
+    {
+      "bearerAuth": []
     }
-  }
+  ]
 }
