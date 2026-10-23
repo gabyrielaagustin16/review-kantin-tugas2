@@ -89,6 +89,23 @@
         }
       }
     },
+    "/api/v1/auth/me": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/stalls/": {
       "get": {
         "description": "",
@@ -273,6 +290,11 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -292,10 +314,6 @@
                         "type": {
                           "type": "string",
                           "example": "integer"
-                        },
-                        "example": {
-                          "type": "number",
-                          "example": 3
                         }
                       }
                     },
@@ -305,10 +323,6 @@
                         "type": {
                           "type": "string",
                           "example": "string"
-                        },
-                        "example": {
-                          "type": "string",
-                          "example": "Cakalang Fufu"
                         }
                       }
                     },
@@ -317,24 +331,16 @@
                       "properties": {
                         "type": {
                           "type": "string",
-                          "example": "integer"
-                        },
-                        "example": {
-                          "type": "number",
-                          "example": 25000
+                          "example": "number"
                         }
                       }
                     },
-                    "isAvailable": {
+                    "category": {
                       "type": "object",
                       "properties": {
                         "type": {
                           "type": "string",
-                          "example": "boolean"
-                        },
-                        "example": {
-                          "type": "boolean",
-                          "example": true
+                          "example": "string"
                         }
                       }
                     }
@@ -346,31 +352,15 @@
         ],
         "responses": {
           "201": {
-            "description": "Menu dibuat"
+            "description": "Menu berhasil dibuat"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
     },
     "/api/v1/menu-items/{id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detail menu"
-          },
-          "404": {
-            "description": "Menu tidak ditemukan"
-          }
-        }
-      },
       "put": {
         "description": "",
         "parameters": [
@@ -381,20 +371,17 @@
             "type": "integer"
           },
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/MenuItemInput"
-            }
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Menu di-update"
+            "description": "Menu berhasil diperbarui"
           },
-          "404": {
-            "description": "Menu tidak ditemukan"
+          "401": {
+            "description": "Unauthorized"
           }
         }
       },
@@ -406,14 +393,19 @@
             "in": "path",
             "required": true,
             "type": "integer"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Menu dihapus"
+            "description": "Menu berhasil dihapus"
           },
-          "404": {
-            "description": "Menu tidak ditemukan"
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -528,9 +520,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }
@@ -557,9 +546,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
           },
           "404": {
             "description": "Review tidak ditemukan"
