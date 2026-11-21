@@ -46,6 +46,7 @@ app.get('/health', async (_req, res) => {
 
 // Route Autentikasi & Utama
 app.use('/api/v1/auth', authRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/v1/stalls', stallRouter);
 app.use('/api/v1/menu-items', menuItemRouter);
 app.use('/api/v1/users', userRouter);
@@ -53,6 +54,7 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/likes', likeRouter);
 app.use('/api/v1/flags', flagRouter);
 app.use('/api/v1/audit-logs', auditLogRouter);
+app.use('/api/audit-logs', auditLogRouter);
 
 // Global Error Handler Middleware
 app.use(errorHandler);

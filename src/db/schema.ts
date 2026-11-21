@@ -65,7 +65,7 @@ export const flags = mssqlTable('FLAGS', {
 
 export const auditLogs = mssqlTable('AUDIT_LOGS', {
   id: int('id').primaryKey().identity(),
-  userId: int('user_id').notNull().references(() => users.id),
+  userId: int('user_id').references(() => users.id),
   action: nvarchar('action', { length: 50 }).notNull(),
   targetTable: nvarchar('target_table', { length: 50 }).notNull(),
   targetId: int('target_id').notNull(),

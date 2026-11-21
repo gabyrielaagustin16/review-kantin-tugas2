@@ -27,6 +27,128 @@
   font-size: 13px;
 }
 
+.audit-page {
+  padding-block: 40px 64px;
+}
+
+.audit-heading,
+.audit-pagination,
+.audit-filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.audit-heading {
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.audit-total {
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.audit-filters {
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-white);
+}
+
+.audit-filter-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.audit-filters .form-field {
+  min-width: 150px;
+  flex: 1;
+}
+
+.audit-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-white);
+}
+
+.audit-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.audit-table th,
+.audit-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.audit-table tbody tr:hover {
+  background: var(--color-pink-soft);
+}
+
+.audit-pagination {
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.audit-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(66, 40, 49, 0.45);
+}
+
+.audit-modal {
+  position: relative;
+  width: min(620px, 100%);
+  max-height: 80vh;
+  overflow: auto;
+  padding: 28px;
+  border-radius: 20px;
+  background: var(--color-white);
+  box-shadow: 0 24px 70px rgba(66, 40, 49, 0.25);
+}
+
+.audit-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.audit-detail {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 10px 16px;
+}
+
+.audit-detail dt {
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.audit-detail dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.audit-detail pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 .site-header__inner {
   min-height: 76px;
   display: flex;

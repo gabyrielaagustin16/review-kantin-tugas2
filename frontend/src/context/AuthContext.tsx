@@ -1,5 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import api from '../api/axiosInstance';
+import { authApi } from '../api/authApi';
 
 export interface User {
   id: number;
@@ -12,7 +13,7 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (token: string) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   loading: boolean;
 }
 
@@ -21,36 +22,43 @@ export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => Boolean(localStorage.getItem('token')));
 
-  const fetchUser = async () => {
+  const logout = useCallback(async () => {
+    if (token) {
+      try {
+        await authApi.logout();
+      } catch {
+        // Local logout must complete even when the audit request fails.
+      }
+    }
+    localStorage.removeItem('token');
+    setToken(null);
+    setUser(null);
+    setLoading(false);
+  }, [token]);
+
+  const fetchUser = useCallback(async () => {
     try {
       const res = await api.get('/auth/me');
       setUser(res.data.data || res.data);
-    } catch (err) {
-      logout();
+    } catch {
+      await logout();
     } finally {
       setLoading(false);
     }
-  };
+  }, [logout]);
 
   useEffect(() => {
     if (token) {
       fetchUser();
-    } else {
-      setLoading(false);
     }
-  }, [token]);
+  }, [token, fetchUser]);
 
   const login = (newToken: string) => {
     localStorage.setItem('token', newToken);
     setToken(newToken);
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    setUser(null);
+    setLoading(true);
   };
 
   return (

@@ -3,6 +3,7 @@ import {
   type CreateMenuItemInput,
 } from '../repositories/menuItemRepository.ts';
 import type { MenuItemDto } from '../dtos/stallDto.ts';
+import type { ClientInfo } from '../utils/clientInfo.ts';
 
 export class MenuItemService {
   private menuItemRepository: MenuItemRepository;
@@ -35,8 +36,10 @@ export class MenuItemService {
 
   async createMenuItem(
     input: CreateMenuItemInput,
+    user?: { id: number; role: string },
+    client: ClientInfo = { ipAddress: null, userAgent: null },
   ): Promise<MenuItemDto> {
-    const row = await this.menuItemRepository.create(input);
+    const row = await this.menuItemRepository.create(input, user, client);
 
     if (!row) {
       throw new Error('MENU_ITEM_NOT_FOUND');
@@ -48,8 +51,10 @@ export class MenuItemService {
   async updateMenuItem(
     id: number,
     input: Partial<CreateMenuItemInput>,
+    user?: { id: number; role: string },
+    client: ClientInfo = { ipAddress: null, userAgent: null },
   ): Promise<MenuItemDto> {
-    const row = await this.menuItemRepository.update(id, input);
+    const row = await this.menuItemRepository.update(id, input, user, client);
 
     if (!row) {
       throw new Error('MENU_ITEM_NOT_FOUND');
@@ -58,8 +63,12 @@ export class MenuItemService {
     return row;
   }
 
-  async deleteMenuItem(id: number): Promise<MenuItemDto> {
-    const row = await this.menuItemRepository.remove(id);
+  async deleteMenuItem(
+    id: number,
+    user?: { id: number; role: string },
+    client: ClientInfo = { ipAddress: null, userAgent: null },
+  ): Promise<MenuItemDto> {
+    const row = await this.menuItemRepository.remove(id, user, client);
 
     if (!row) {
       throw new Error('MENU_ITEM_NOT_FOUND');

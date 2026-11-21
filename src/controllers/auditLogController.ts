@@ -1,5 +1,7 @@
 import type { Request, Response } from 'express';
 import { AuditLogService } from '../services/auditLogService.ts';
+import { AppError } from '../errors/AppError.ts';
+import type { AuditLogFilters } from '../repositories/auditLogRepository.ts';
 
 export class AuditLogController {
   private auditLogService: AuditLogService;
@@ -11,44 +13,38 @@ export class AuditLogController {
   }
 
   getAuditLogs = async (
-    _req: Request,
+    req: Request,
     res: Response,
+    next: (error: unknown) => void,
   ): Promise<Response> => {
     try {
-      const auditLogs = await this.auditLogService.getAllAuditLogs();
-
+      const filters = req.query as unknown as AuditLogFilters;
+      const auditLogs = await this.auditLogService.getAuditLogs(filters);
       return res.status(200).json({
         status: 'success',
         data: auditLogs,
       });
     } catch (error) {
-      return res.status(500).json({
-        status: 'error',
-        message: 'Terjadi kesalahan pada server',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      next(error);
+      return res;
     }
   };
 
-  createAuditLog = async (
+  getAuditLogById = async (
     req: Request,
     res: Response,
+    next: (error: unknown) => void,
   ): Promise<Response> => {
     try {
-      const auditLog = await this.auditLogService.createAuditLog(
-        req.body,
-      );
-
-      return res.status(201).json({
+      const auditLog = await this.auditLogService.getAuditLogById(Number(req.params.id));
+      if (!auditLog) throw new AppError(404, 'Catatan audit tidak ditemukan');
+      return res.status(200).json({
         status: 'success',
         data: auditLog,
       });
     } catch (error) {
-      return res.status(500).json({
-        status: 'error',
-        message: 'Terjadi kesalahan pada server',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      next(error);
+      return res;
     }
   };
 }

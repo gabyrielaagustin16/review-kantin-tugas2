@@ -5,6 +5,10 @@ import { AuthContext } from '../context/AuthContext';
 export function SiteHeader() {
   const { user, logout, loading } = useContext(AuthContext);
 
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <header className="site-header">
       <div className="site-header__inner">
@@ -19,6 +23,9 @@ export function SiteHeader() {
               <span className="nav-loading" role="status">Memuat akun...</span>
             ) : user ? (
               <>
+                {user.role === 'admin' && (
+                  <NavLink className="site-nav__link" to="/audit-logs">Audit Log</NavLink>
+                )}
                 <span className="user-pill">
                   <span className="user-pill__avatar" aria-hidden="true">{user.name.charAt(0).toUpperCase()}</span>
                   <span className="user-pill__copy">
@@ -26,7 +33,7 @@ export function SiteHeader() {
                     <span className="user-pill__role">{user.role}</span>
                   </span>
                 </span>
-                <button className="button button--soft" type="button" onClick={logout}>Keluar</button>
+                <button className="button button--soft" type="button" onClick={handleLogout}>Keluar</button>
               </>
             ) : (
               <>

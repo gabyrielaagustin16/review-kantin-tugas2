@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login } from '../controllers/authController.ts';
+import { register, login, logout } from '../controllers/authController.ts';
 import { validate } from '../middlewares/validate.ts';
 import { registerSchema, loginSchema } from '../schemas/authSchema.ts';
 import { authenticate } from '../middlewares/auth.ts';
@@ -24,3 +24,15 @@ authRouter.get('/me', authenticate, (req, res) => {
     data: (req as any).user,
   });
 });
+
+authRouter.post(
+  '/logout',
+  authenticate,
+  (req, res, next) => {
+    // #swagger.tags = ['Auth']
+    // #swagger.summary = 'Logout dan catat audit'
+    // #swagger.responses[200] = { description: 'Logout berhasil' }
+    // #swagger.responses[401] = { description: 'Token tidak ada atau tidak valid' }
+    return logout(req, res, next);
+  },
+);

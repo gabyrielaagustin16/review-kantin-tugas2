@@ -35,3 +35,8 @@ export function getDb() {
 
   return dbPromise;
 }
+
+export async function getPool() {
+  poolPromise ??= mssql.connect(config);
+  return poolPromise;
+}

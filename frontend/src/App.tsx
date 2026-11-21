@@ -5,6 +5,7 @@ import { StallsPage } from './pages/StallsPage';
 import StallDetailPage from './pages/StallDetailPage';
 import './App.css';
 import { SiteHeader } from './components/SiteHeader';
+import AuditLogsPage from './pages/AuditLogsPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/stalls/:id" element={<StallDetailPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/audit-logs" element={<AuditLogsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <footer className="site-footer">Review Kantin · Temukan pilihan makanmu hari ini</footer>
