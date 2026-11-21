@@ -111,7 +111,7 @@ public async createStall(req: Request, res: Response) {
     const { name, category, location, description } = req.body;
 
     const stall = await this.stallService.createStall({
-      ownerId,
+      ownerId: Number(ownerId),
       name,
       category,
       location,

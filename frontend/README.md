@@ -24,4 +24,10 @@ Sebagai panduan, gunakan file `.env.example` yang sudah disediakan:
 
 1. Salin file `.env.example` menjadi `.env`:
    ```bash
+   cp ../.env.example ../.env
+   ```
+2. Salin konfigurasi frontend:
+   ```bash
    cp .env.example .env
+   ```
+   `VITE_API_BASE_URL` mengarah ke API backend `/api/v1` secara default.

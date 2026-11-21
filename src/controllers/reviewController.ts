@@ -44,7 +44,7 @@ public async createReview(req: Request, res: Response) {
     const { stallId, rating, comment } = req.body;
 
     const review = await this.reviewService.createReview({
-      userId,
+      userId: Number(userId),
       stallId,
       rating,
       comment,

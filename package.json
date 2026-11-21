@@ -8,7 +8,8 @@
     "prestart": "npm run docs:gen",
     "dev": "tsx watch src/index.ts",
     "predev": "npm run docs:gen",
-    "docs:gen": "tsx src/docs/swagger.ts"
+    "docs:gen": "tsx src/docs/swagger.ts",
+    "test": "tsx --test src/schemas/auditLogSchema.test.ts src/routes/auditLogRouter.test.ts"
   },
   "keywords": [],
   "author": "",

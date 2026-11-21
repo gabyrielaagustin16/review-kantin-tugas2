@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { MenuItemService } from '../services/menuItemService.ts';
+import { getClientInfo } from '../utils/clientInfo.ts';
 
 export class MenuItemController {
   private menuItemService: MenuItemService;
@@ -69,6 +70,8 @@ export class MenuItemController {
     try {
       const menuItem = await this.menuItemService.createMenuItem(
         req.body,
+        (req as any).user,
+        getClientInfo(req),
       );
 
       return res.status(201).json({
@@ -88,6 +91,8 @@ export class MenuItemController {
       const menuItem = await this.menuItemService.updateMenuItem(
         Number(req.params.id),
         req.body,
+        (req as any).user,
+        getClientInfo(req),
       );
 
       return res.status(200).json({
@@ -106,6 +111,8 @@ export class MenuItemController {
     try {
       const menuItem = await this.menuItemService.deleteMenuItem(
         Number(req.params.id),
+        (req as any).user,
+        getClientInfo(req),
       );
 
       return res.status(200).json({
